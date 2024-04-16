@@ -9,6 +9,7 @@ M5UnitKmeterISO kmeter;
 uint8_t error_status = 0;
 long delay_time      = 0;
 float temp;
+float inttemp;
 
 void setup() {
     M5.begin();
@@ -23,13 +24,14 @@ void setup() {
 void loop() {
         error_status = kmeter.getReadyStatus();
         if (error_status == 0) {
-          temp = (float)(kmeter.getCelsiusTempValue())/100;
+          temp = (float)(kmeter.getCelsiusTempValue()) /100;
+          inttemp = (float)(kmeter.getInternalCelsiusTempValue()) / 100;
               M5.Lcd.setFreeFont(&DSEG7_Classic_Regular_64);
               M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
               M5.Lcd.drawString(String(temp, 1),30,15);
               M5.Lcd.setFreeFont(&DSEG7_Classic_Bold_30);
               M5.Lcd.setTextColor(YELLOW, TFT_BLACK);
-              M5.Lcd.drawString(String(temp, 1),140,100);
+              M5.Lcd.drawString(String(inttemp, 1),140,100);
         } 
         else {
           Serial.printf("Error: %d", kmeter.getReadyStatus());
